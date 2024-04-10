@@ -1,21 +1,40 @@
-import {Alert, Image, View} from 'react-native'
+import {useState} from "react";
+import {Alert, Image, View, StatusBar} from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { Link } from 'expo-router'
+import { Link, Redirect } from 'expo-router'
 
 import { colors } from "@/styles/colors"
 import { Input } from "@/components/input";
 import Button from "@/components/button";
-import {StatusBar} from "react-native";
-import {useState} from "react";
-
+import { api } from '@/server/api';
+import { useBadgeStore } from '@/store/badge-store'
 
 export default function Home(){
     const [code, setCode] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const badgeStore = useBadgeStore();
 
-    const handleAccessCredential = ()  => {
-        if (!code.trim()) {
-            return Alert.alert('Ingresso', 'Informe o código do ingresso');
+    const handleAccessCredential = async()  => {
+        try {
+            if (!code.trim()) {
+              return Alert.alert("Ingresso", "Informe o código do ingresso!")
+            }
+      
+            setIsLoading(true)
+      
+            const { data } = await api.get(`/attendees/${code}/badge`)
+            badgeStore.save(data.badge)
+            console.log("DATA: " + data.badge);
+        } catch (error) {
+            console.log(error)
+            setIsLoading(false)
+      
+            Alert.alert("Ingresso", "Ingresso não encontrado!")
         }
+    }
+
+    if (badgeStore.data?.checkInURL) {
+        return <Redirect href="/ticket" />
     }
 
     return (
@@ -35,7 +54,13 @@ export default function Home(){
                         color={colors.green[200]}
                     />
                 </Input>
-                <Button title="Acessar credencial" onPress={handleAccessCredential}/>
+                
+                <Button 
+                    title="Acessar credencial" 
+                    onPress={handleAccessCredential}
+                    isLoading={isLoading}
+                />
+                
                 <Link href="/register" className="text-gray-100 text-base font-bold text-center mt-8">
                     Ainda não possui ingresso?
                 </Link>
