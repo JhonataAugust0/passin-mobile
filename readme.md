@@ -15,6 +15,7 @@ Recomendo seguir a seguinte sequência para a leitura da documentação:
 - [ticket](https://github.com/JhonataAugust0/passin-mobile/blob/master/docs/ticket.md)
 - [identidade visual](https://github.com/JhonataAugust0/passin-mobile/blob/master/docs/identidade%20visual.md)
 - [layout](https://github.com/JhonataAugust0/passin-mobile/blob/master/docs/layout.md)
+- [comece aqui](https://github.com/JhonataAugust0/passin-mobile/blob/master/docs/get_start.md)
 - componentes
   - [loading](https://github.com/JhonataAugust0/passin-mobile/blob/master/docs/loading.md)
   - [header](https://github.com/JhonataAugust0/passin-mobile/blob/master/docs/header.md)
